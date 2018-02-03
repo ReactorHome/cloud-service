@@ -1,0 +1,6 @@
+reactor/entities/ScheduleEvent.class
+reactor/Application.class
+reactor/controllers/ScheduleEventController.class
+reactor/controllers/FaceController.class
+reactor/schedule/ScheduledTasks.class
+reactor/repositories/ScheduleEventRepository.class
