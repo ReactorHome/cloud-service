@@ -29,7 +29,7 @@ public interface ScheduleEventRepository extends JpaRepository<ScheduleEvent, In
     Optional<List<ScheduleEvent>> findScheduleEventsBySundayAndHourAndMinute(
             boolean day, Integer hour, Integer minute_after);
 
-    Optional<List<ScheduleEvent>> findScheduleEventsByDeviceId(Integer deviceIdd);
+    Optional<List<ScheduleEvent>> findScheduleEventsByDeviceId(Integer deviceId);
 
-    Optional<List<ScheduleEvent>> findScheduleEventsBySecondAfter(Integer second);
+    Optional<List<ScheduleEvent>> findScheduleEventsByMinuteAfter(Integer minute);
 }

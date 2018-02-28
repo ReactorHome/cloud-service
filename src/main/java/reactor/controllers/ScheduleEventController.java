@@ -18,8 +18,12 @@ import java.util.Optional;
 @RequestMapping("/schedule")
 public class ScheduleEventController {
 
+    private final ScheduleEventRepository scheduleEventRepository;
+
     @Autowired
-    private ScheduleEventRepository scheduleEventRepository;
+    public ScheduleEventController(ScheduleEventRepository scheduleEventRepository) {
+        this.scheduleEventRepository = scheduleEventRepository;
+    }
 
     @GetMapping("/now")
     ResponseEntity getNow(){
@@ -81,8 +85,8 @@ public class ScheduleEventController {
     }
 
     @GetMapping("/get/second/after/{second}")
-    ResponseEntity getSecondAfter(@PathVariable Integer second){
-        Optional<List<ScheduleEvent>> optional = scheduleEventRepository.findScheduleEventsBySecondAfter(second);
+    ResponseEntity getAfterMinute(@PathVariable Integer second){
+        Optional<List<ScheduleEvent>> optional = scheduleEventRepository.findScheduleEventsByMinuteAfter(second);
 
         if(optional.isPresent()){
             ObjectMapper objectMapper = new ObjectMapper();
