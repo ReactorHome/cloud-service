@@ -1,0 +1,15 @@
+# Intellij
+.idea/
+*.iml
+*.iws
+.floo
+.flooignore
+
+# Mac
+.DS_Store
+ 
+# Maven
+log/
+target/
+src/main/resources/
+

@@ -16,7 +16,6 @@ public class ScheduleEvent {
     private Integer deviceId;
     private String attribute_name;
     private String attribute_value;
-    private Integer second;
     private Integer minute;
     private Integer hour;
     private boolean monday;
@@ -30,12 +29,11 @@ public class ScheduleEvent {
     public ScheduleEvent() {
     }
 
-    public ScheduleEvent(Integer groupId, Integer deviceId, String attribute_name, String attribute_value, Integer second, Integer minute, Integer hour, boolean monday, boolean tuesday, boolean wednesday, boolean thursday, boolean friday, boolean saturday, boolean sunday) {
+    public ScheduleEvent(Integer groupId, Integer deviceId, String attribute_name, String attribute_value, Integer minute, Integer hour, boolean monday, boolean tuesday, boolean wednesday, boolean thursday, boolean friday, boolean saturday, boolean sunday) {
         this.groupId = groupId;
         this.deviceId = deviceId;
         this.attribute_name = attribute_name;
         this.attribute_value = attribute_value;
-        this.second = second;
         this.minute = minute;
         this.hour = hour;
         this.monday = monday;
@@ -85,14 +83,6 @@ public class ScheduleEvent {
 
     public void setAttribute_value(String attribute_value) {
         this.attribute_value = attribute_value;
-    }
-
-    public Integer getSecond() {
-        return second;
-    }
-
-    public void setSecond(Integer second) {
-        this.second = second;
     }
 
     public Integer getMinute() {

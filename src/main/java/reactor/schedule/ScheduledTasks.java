@@ -1,7 +1,5 @@
 package reactor.schedule;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
@@ -14,39 +12,48 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 @Component
 public class ScheduledTasks {
 
-    @Autowired
-    private ScheduleEventRepository scheduleEventRepository;
+    private final ScheduleEventRepository scheduleEventRepository;
 
     private Queue<ScheduleEvent> eventQueue = new ConcurrentLinkedQueue<>();
 
-    @Scheduled(fixedRate = 5000)
+    private final int refreshRate = 60 * 1000;
+
+    @Autowired
+    public ScheduledTasks(ScheduleEventRepository scheduleEventRepository) {
+        this.scheduleEventRepository = scheduleEventRepository;
+    }
+
+    @Scheduled(fixedRate = refreshRate)
     public void getDueEvents() {
         Calendar c = Calendar.getInstance();
         c.setTime(new Date());
         int dayOfWeek = c.get(Calendar.DAY_OF_WEEK);
+        int hour = c.get(Calendar.HOUR);
+        int minute = c.get(Calendar.MINUTE);
+
 
         Optional<List<ScheduleEvent>> optional = null;
         switch (dayOfWeek){
             case 1:
-                optional = scheduleEventRepository.findScheduleEventsBySundayOrderByHourAscMinuteAscSecondAsc(true);
+                optional = scheduleEventRepository.findScheduleEventsBySundayAndHourAndMinute(true, hour, minute);
                 break;
             case 2:
-                optional = scheduleEventRepository.findScheduleEventsByMondayOrderByHourAscMinuteAscSecondAsc(true);
+                optional = scheduleEventRepository.findScheduleEventsByMondayAndHourAndMinute(true, hour, minute);
                 break;
             case 3:
-                optional = scheduleEventRepository.findScheduleEventsByTuesdayOrderByHourAscMinuteAscSecondAsc(true);
+                optional = scheduleEventRepository.findScheduleEventsByTuesdayAndHourAndMinute(true, hour, minute);
                 break;
             case 4:
-                optional = scheduleEventRepository.findScheduleEventsByWednesdayOrderByHourAscMinuteAscSecondAsc(true);
+                optional = scheduleEventRepository.findScheduleEventsByWednesdayAndHourAndMinute(true, hour, minute);
                 break;
             case 5:
-                optional = scheduleEventRepository.findScheduleEventsByThursdayOrderByHourAscMinuteAscSecondAsc(true);
+                optional = scheduleEventRepository.findScheduleEventsByThursdayAndHourAndMinute(true, hour, minute);
                 break;
             case 6:
-                optional = scheduleEventRepository.findScheduleEventsByFridayOrderByHourAscMinuteAscSecondAsc(true);
+                optional = scheduleEventRepository.findScheduleEventsByFridayAndHourAndMinute(true, hour, minute);
                 break;
             case 7:
-                optional = scheduleEventRepository.findScheduleEventsBySaturdayOrderByHourAscMinuteAscSecondAsc(true);
+                optional = scheduleEventRepository.findScheduleEventsBySaturdayAndHourAndMinute(true, hour, minute);
                 break;
             default:
         }
@@ -54,7 +61,7 @@ public class ScheduledTasks {
         optional.ifPresent(scheduleEvents -> eventQueue.addAll(scheduleEvents));
     }
 
-    @Scheduled(fixedRate = 5000)
+    @Scheduled(fixedRate = 10 * 1000)
     public void executeEvents() {
         while (!eventQueue.isEmpty()){
             ScheduleEvent event = eventQueue.remove();
